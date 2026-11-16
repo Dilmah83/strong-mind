@@ -1,0 +1,42 @@
+// Approximate generic values per 100 g edible portion. Missing nutrients are unknown, not measured zero.
+// Seed data for offline use; packaging and preparation can materially change values.
+const rows=[
+['Oats, dry',389,16.9,66.3,6.9,10.6,0,0,0,54,4.7,177,429],
+['Banana',89,1.1,22.8,.3,2.6,3,8.7,0,5,.3,27,358],
+['Apple, with skin',52,.3,13.8,.2,2.4,3,4.6,0,6,.1,5,107],
+['Blueberries',57,.7,14.5,.3,2.4,3,9.7,0,6,.3,6,77],
+['Strawberries',32,.7,7.7,.3,2,1,58.8,0,16,.4,13,153],
+['Orange',47,.9,11.8,.1,2.4,11,53.2,0,40,.1,10,181],
+['Avocado',160,2,8.5,14.7,6.7,7,10,0,12,.6,29,485],
+['Chicken breast, cooked',165,31,0,3.6,0,6,0,.1,15,1,29,256],
+['Salmon, cooked',206,22.1,0,12.4,0,12,0,13.1,15,.3,30,384],
+['Tuna, canned in water',116,25.5,0,.8,0,17,0,1.7,11,1.3,27,237],
+['Egg, whole, cooked',155,12.6,1.1,10.6,0,149,0,2.2,50,1.2,10,126],
+['Tofu, firm',144,17.3,2.8,8.7,2.3,0,.2,0,683,2.7,58,237],
+['Lentils, cooked',116,9,20.1,.4,7.9,0,1.5,0,19,3.3,36,369],
+['Chickpeas, cooked',164,8.9,27.4,2.6,7.6,1,1.3,0,49,2.9,48,291],
+['Black beans, cooked',132,8.9,23.7,.5,8.7,0,0,0,27,2.1,70,355],
+['Brown rice, cooked',123,2.7,25.6,1,1.6,0,0,0,3,.6,39,86],
+['Quinoa, cooked',120,4.4,21.3,1.9,2.8,0,0,0,17,1.5,64,172],
+['Wholemeal bread',247,13,41,4.2,7,0,0,0,107,2.4,82,230],
+['Potato, baked',93,2.5,21.2,.1,2.2,0,9.6,0,15,1.1,28,535],
+['Sweet potato, baked',90,2,20.7,.2,3.3,961,19.6,0,38,.7,27,475],
+['Broccoli, cooked',35,2.4,7.2,.4,3.3,77,64.9,0,40,.7,21,293],
+['Spinach, raw',23,2.9,3.6,.4,2.2,469,28.1,0,99,2.7,79,558],
+['Carrot, raw',41,.9,9.6,.2,2.8,835,5.9,0,33,.3,12,320],
+['Tomato, raw',18,.9,3.9,.2,1.2,42,13.7,0,10,.3,11,237],
+['Red pepper, raw',31,1,6,.3,2.1,157,127.7,0,7,.4,12,211],
+['Greek yoghurt, plain, nonfat',59,10.3,3.6,.4,0,1,0,0,110,.1,11,141],
+['Milk, whole',61,3.2,4.8,3.3,0,46,0,.1,113,0,10,132],
+['Cheddar cheese',403,24.9,1.3,33.1,0,337,0,.6,721,.7,28,98],
+['Almonds',579,21.2,21.6,49.9,12.5,0,0,0,269,3.7,270,733],
+['Walnuts',654,15.2,13.7,65.2,6.7,1,1.3,0,98,2.9,158,441],
+['Chia seeds',486,16.5,42.1,30.7,34.4,0,1.6,0,631,7.7,335,407],
+['Peanut butter',588,25,20,50,6,0,0,0,43,1.9,154,649],
+['Olive oil',884,0,0,100,0,0,0,0,1,.6,0,1],
+['Pasta, cooked',158,5.8,30.9,.9,1.8,0,0,0,7,1.3,18,44],
+['Turkey breast, cooked',147,30.1,0,2.1,0,0,0,.2,14,1,28,249],
+['Beef, lean, cooked',217,26.1,0,11.8,0,0,0,.1,12,2.6,21,318]
+];
+const keys=['calories','protein','carbs','fat','fibre','vitaminA','vitaminC','vitaminD','calcium','iron','magnesium','potassium'];
+export const foods=rows.map(([name,...values],i)=>({id:`seed-${i}`,name,nutrients:Object.fromEntries(keys.map((k,j)=>[k,values[j]])),source:'Generic estimate'}));
