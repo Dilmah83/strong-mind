@@ -7,7 +7,7 @@
     "build": "node scripts/build.mjs",
     "start": "node server.mjs",
     "test": "node test/model.test.js",
-    "check": "node --check src/app.js && node --check src/model.js && node --check public/sw.js"
+    "check": "node scripts/check.mjs"
   },
   "engines": {
     "node": ">=22"

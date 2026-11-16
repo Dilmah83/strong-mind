@@ -17,7 +17,7 @@ Open http://localhost:3000. The build copies source and static assets into `dist
 
 ## Deploy on Render
 
-1. Merge the pull request into `main`.
+1. The application source is committed on `main`. Use that branch for deployment.
 2. In Render, choose **New → Blueprint**, connect this GitHub repository, and select `render.yaml`. Review and create the static site.
 3. Alternatively create a **Static Site**, choose this repository and branch, set build command to `npm run check && npm run build && npm test`, and publish directory to `dist`.
 4. No environment variables, API keys, database or paid web service are needed. Render provides an HTTPS URL. No SPA rewrite is required: app routes use hash fragments.
@@ -34,18 +34,20 @@ Open the Render HTTPS URL in **Safari → Share → Add to Home Screen → Open 
 - Thirty distinct daily lessons, practical activities, reflection prompts, mood ratings and timestamped sign-offs. A day requires all three practices plus a nonblank journal to sign off. Editing a signed day clears its sign-off.
 - Daily Spotify and podcast topic-search links plus Calm catalogue links and suggested practices. Days can be revisited freely.
 - Searchable offline database of 36 generic foods; custom foods with any supported nutrient; portion scaling per 100 g; breakfast/lunch/dinner/snack logging, deletion and date-based history.
-- Calories, protein, carbohydrates, fat, fibre, vitamins A/C/D/E/K/B1/B2/B3/B6/B12, folate, calcium, iron, magnesium, potassium, zinc, selenium and sodium. All goals are configurable; sodium is a limit.
+- Calories, protein, carbohydrates, fat, fibre, vitamins A/C/D/E/K/B1/B2/B3/B6/B12, folate, calcium, iron, magnesium, potassium, zinc, selenium, sodium and iodine, plus saturated fat and sugar. All 26 goals are configurable; sodium and saturated fat are limits.
 - Completion and mood charts, 14-day calorie chart and numeric macronutrient history table.
 - Local persistence, quota/error notification, optional persistent-storage request, validated JSON backup/restore and offline service-worker asset caching.
 - Automated syntax, domain and packaging checks plus GitHub Actions CI.
 
 ## Content and integration limitations
 
-**The original programme was not accessible.** The repository contained `strong-mind-app-repacked.zip`; GitHub's connected tools rejected its binary contents and direct network download failed. The archive is preserved unchanged. The app therefore explicitly labels its 30-day content as a replacement. Update `src/programme.js` with the earlier approved plan and specific episode/session URLs when available. This implementation does not claim to reproduce that unseen design.
+**The original programme is restored.** The themes, publisher links and practical actions in `src/programme.js` come from the repository’s `strong-mind-app-repacked.zip`, which is preserved unchanged. Added reflection prompts expand the original general reflection questions. The routine is 10 minutes of Calm, 35 minutes of audio, 10 minutes of practical action and 5 minutes of reflection. Completion uses practice checkboxes plus a required journal and timestamped sign-off.
 
-Spotify and podcast links open topic searches, **not curated or verified individual episodes**. Calm opens its meditation catalogue, not a guaranteed specific session. These links require no app credentials; playback, regional availability, account access and paid subscriptions are controlled by those services. There is no embedded playback, Spotify OAuth or offline licensed audio.
+Spotify links open topic searches. Original publisher links include both individual episode pages and catalogues, and have not been independently verified. Calm opens its site; select the suggested Daily Calm, Daily Jay or Daily Trip in your account. These links require no app credentials; playback, regional availability, account access and paid subscriptions are controlled by those services. There is no embedded playback, Spotify OAuth or offline licensed audio.
 
 The food database is deliberately local and finite, not a live commercial nutrition catalogue. Values are approximate generic estimates per 100 g, not certified analysis. Seed foods include macros and selected micronutrients. Missing values are unknown and labelled in totals; they must not be interpreted as measured zero. Custom foods can record all supported vitamins/minerals using package labels. No live food API is configured. Adding a larger USDA or commercial database requires a data import, attribution review or backend API proxy with provider credentials; never put private API keys in client code.
+
+Existing device-local records from the original archived app are migrated automatically on the same origin, and its JSON backups can be restored through Settings. Existing v1 records gain the newly supported nutrient goals. Original portion totals are converted to per-100-g snapshots without changing daily totals. Original sign-off timestamps were not recorded, so migrated completions are timestamped when migrated. Export a backup before switching versions or deployment origins.
 
 Data is **device/browser-local**, not cloud-synchronised. Clearing Safari storage, uninstalling the app or iOS eviction can remove data. Export backups regularly and treat them as private health-related records. There is no server account, encryption-at-rest layer, push notification service or cross-device sync. Nutrition targets are editable examples, not medical prescriptions.
 

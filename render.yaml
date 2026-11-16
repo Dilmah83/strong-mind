@@ -2,6 +2,7 @@ services:
   - type: web
     name: strong-mind
     runtime: static
+    branch: main
     buildCommand: npm run check && npm run build && npm test
     staticPublishPath: ./dist
     headers:
