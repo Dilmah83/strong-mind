@@ -1,6 +1,28 @@
-# Strong Mind V2
+# Strong Mind V3
 
 A complete local-first, installable Progressive Web App for a deliberate daily practice. Outdoor/stoic visual design, original 30-day programme, 100 sourced quotes, 20 researched success stories, Australian nutrition reference data, flexible portions and reusable recipes. No accounts or cloud synchronisation; private journals and nutrition history remain in the browser.
+
+
+## V3 immersive nature audio
+
+All V2 features, the original 30-day programme and existing user records remain intact. V3 adds:
+
+- Eight **authentic CC0 field recordings**: Forest Rain (default), Heavy Rain, Ocean Swells, Thunderstorm, Mountain Stream, Waterfall, Ancient Forest and Night Rain. Audio and photo licences/creators are linked in `/media-credits.html` and [media provenance](docs/AUDIO-SOURCES.md). Titles describe moods; “Ancient Forest” is not a claim of verified forest age.
+- One Web Audio engine shared across all hash routes. A native looping AudioBufferSource uses a 2-second equal-power circular PCM crossfade, avoiding JavaScript scheduling gaps and encoder-boundary silence. The current decoded buffer is reused; no per-frame DSP or animation runs for audio. A new sound replaces the previous source rather than mixing streams.
+- Floating controls for enabled/mute, manual play/pause, volume, soundscape, favourite and session-only 15/30/60-minute sleep timers. Preferences are included in the existing local state and JSON backups. Old saves receive compatible defaults. Volume uses a GainNode rather than relying on iOS HTMLMediaElement volume behaviour.
+- Gentle automatic playback is attempted only when enabled. Browser rejection leaves an **Enter Strong Mind** gesture path. The audio context is resumed synchronously in that tap before fetching/decoding; failure never blocks the programme. **Saved explicit mute always wins**. “Enter quietly” remembers mute. Enabling sound is a separate explicit action.
+- Seven licensed photographs rotate deterministically by local calendar date. A daily arrival presents the photograph, fading Stoic quote and entry action. The home screen has **Begin Today’s Programme**. Landscape sound pairings are recommendations; “Match this landscape’s sound” is explicit and never unmutes or overrides a saved selection automatically. New photography is not fetched daily; the seven-scene cycle is bundled offline.
+- Default Forest Rain, all arrival photos and the core libraries are precached. The seven other sounds are cached on first use after service-worker activation; first-time use of an uncached sound requires internet. No CDN requests or audio API credentials are needed at runtime. This increases the install cache by the default MP3 plus compressed photographs; other audio downloads are on demand.
+
+### iPhone/Safari and external audio limits
+
+Browser/iOS policy can require a fresh tap after launch or an interruption, even in a Home Screen PWA. The app cannot bypass autoplay rules, the silent switch, device volume, call interruptions or OS suspension. No physical iPhone/Safari testing is claimed. See [Apple’s Web Audio guidance](https://developer.apple.com/library/archive/documentation/AudioVideo/Conceptual/Using_HTML5_Audio_Video/PlayingandSynthesizingSounds/PlayingandSynthesizingSounds.html) and [Web Audio best practices](https://developer.mozilla.org/en-US/docs/Web/API/Web_Audio_API/Best_practices).
+
+Ambience pauses on visibility/pagehide/freeze and releases the audio hardware while inactive. It may resume on return only if it was playing before inactivity; a manual pause, timer expiry or external-media hand-off does not auto-resume. Timers use a wall-clock deadline and are rechecked on return if iOS suspended JavaScript. Timer settings do not survive closing/reloading the document. An ambient audio session is requested where the browser supports it; iOS retains control of mixing/interruption behaviour.
+
+Clicking Spotify, Calm, YouTube or publisher links **inside the programme** pauses ambience synchronously before navigation. Strong Mind cannot observe playback in a separate native app or unrelated browser tab. There is no claim of Spotify/Calm playback detection or remote control. Use manual Pause if starting external audio independently, and Play when ready to return. The app intentionally stops ambience when hidden/locked rather than promising background/locked-screen playback.
+
+V3 validation: `npm run check && npm run build && npm test` includes 12 audio tests in addition to the 36 existing tests. `python test/audio-browser.py` uses real Chromium codecs and checks all eight recordings, loop boundaries, single-source playback, navigation/orientation, persistent mute/volume, external-link hand-off, inactive lifecycle and offline default rain. `python test/browser-smoke.py` checks the original features and migrations with the new arrival screen. Neither runner is physical iPhone testing. Build/deployment still uses the existing Render Static Site settings below; no additional Render service is required for ambient audio.
 
 ## Build, run and test
 

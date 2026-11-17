@@ -1,5 +1,6 @@
+import {audioDefaults,validateAudio} from './audio-preferences.js';
 export const nutrients={calories:['Calories','kcal',2000],protein:['Protein','g',100],carbs:['Carbohydrates','g',250],fat:['Fat','g',65],fibre:['Fibre','g',30],saturatedFat:['Saturated fat (limit)','g',20],sugar:['Sugar','g',50],iodine:['Iodine','µg',150],vitaminA:['Vitamin A','µg',900],vitaminC:['Vitamin C','mg',90],vitaminD:['Vitamin D','µg',20],vitaminE:['Vitamin E','mg',15],vitaminK:['Vitamin K','µg',120],b1:['Thiamin (B1)','mg',1.2],b2:['Riboflavin (B2)','mg',1.3],b3:['Niacin (B3)','mg',16],b6:['Vitamin B6','mg',1.7],b12:['Vitamin B12','µg',2.4],folate:['Folate','µg',400],calcium:['Calcium','mg',1000],iron:['Iron','mg',18],magnesium:['Magnesium','mg',400],potassium:['Potassium','mg',3500],zinc:['Zinc','mg',11],selenium:['Selenium','µg',55],sodium:['Sodium (limit)','mg',2300]};
-export const defaults=()=>({version:2,wisdom:{reflections:{},favourites:[]},foodFavourites:[],recipes:[],preferences:{units:'metric',usdaProxy:''},start:localDate(),days:{},meals:[],foods:[],goals:Object.fromEntries(Object.entries(nutrients).map(([k,v])=>[k,v[2]]))});
+export const defaults=()=>({version:2,wisdom:{reflections:{},favourites:[]},foodFavourites:[],recipes:[],preferences:{units:'metric',usdaProxy:'',audio:audioDefaults()},start:localDate(),days:{},meals:[],foods:[],goals:Object.fromEntries(Object.entries(nutrients).map(([k,v])=>[k,v[2]]))});
 export function localDate(d=new Date()){return `${d.getFullYear()}-${String(d.getMonth()+1).padStart(2,'0')}-${String(d.getDate()).padStart(2,'0')}`;}
 export function currentDay(start,now=localDate()){return Math.max(1,Math.min(30,Math.round((Date.parse(now)-Date.parse(start))/86400000)+1));}
 export function totals(meals,date){return Object.fromEntries(Object.keys(nutrients).map(k=>[k,meals.filter(m=>m.date===date).reduce((s,m)=>s+(m.nutrients[k]??0)*m.grams/100,0)]));}
@@ -16,7 +17,7 @@ export function migrateState(input) {
   if (!input || typeof input !== 'object') throw Error('Invalid saved data');
   const base = defaults();
   if (input.version === 1 || input.version === 2) {
-    return validateState({...base, ...input, version:2, goals: {...base.goals, ...input.goals}, preferences:{...base.preferences,...input.preferences}});
+    return validateState({...base, ...input, version:2, goals: {...base.goals, ...input.goals}, preferences:{...base.preferences,...input.preferences,audio:{...audioDefaults(),...input.preferences?.audio}}});
   }
   if (!input.signoffs || !input.journals || !Array.isArray(input.meals)) throw Error('Unknown saved data format');
   const aliases = {thiamin:'b1', riboflavin:'b2', niacin:'b3', vitaminB6:'b6', vitaminB12:'b12'};
@@ -48,6 +49,7 @@ export function migrateState(input) {
 }
 
 function validateExtensions(s) {
+  if(!validateAudio(s.preferences?.audio))throw Error('Invalid sound preferences');
   if (!s.wisdom || !Array.isArray(s.wisdom.favourites) || !s.wisdom.favourites.every(x=>typeof x==='string') || !s.wisdom.reflections || typeof s.wisdom.reflections!=='object' || Array.isArray(s.wisdom.reflections)) throw Error('Invalid wisdom data');
   for (const [date,value] of Object.entries(s.wisdom.reflections)) {
     if (!/^\d{4}-\d{2}-\d{2}$/.test(date) || typeof value!=='boolean') throw Error('Invalid reflection');

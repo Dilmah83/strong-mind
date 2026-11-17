@@ -14,6 +14,7 @@ with sync_playwright() as p:
  page.on('pageerror',lambda error:errors.append(str(error)))
  page.goto(BASE);page.wait_for_function("document.querySelector('.wisdom blockquote') && !document.querySelector('#connection').textContent.includes('loading')")
  page.wait_for_function("navigator.serviceWorker.controller !== null")
+ if page.locator('#nature-entry[open]').count():page.locator('#enter-quietly').click()
  page.goto(BASE+'/#nutrition');page.locator('#search').fill('Milk cow fluid regular')
  page.locator('[data-action="open-food"][data-id="afcd-F005634"]').wait_for()
  page.locator('[data-action="open-food"][data-id="afcd-F005634"]').click()

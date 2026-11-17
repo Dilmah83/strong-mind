@@ -1,0 +1,107 @@
+// Authentic field recordings; licences verified 2026-11-17. See docs/AUDIO-SOURCES.md.
+export const soundscapes = [
+  {
+    "id": "forest-rain",
+    "name": "Forest Rain",
+    "description": "Gentle rain through forest foliage",
+    "author": "Anya_Media",
+    "source": "https://freesound.org/people/Anya_Media/sounds/523391/",
+    "recording": "Forest, light rain.wav by Anya_Media",
+    "download": "https://cdn.freesound.org/previews/523/523391_2010973-hq.mp3",
+    "license": "CC0 1.0",
+    "licenseUrl": "https://creativecommons.org/publicdomain/zero/1.0/",
+    "url": "/audio/forest-rain.mp3",
+    "modifications": "Excerpt up to 60 seconds, loudness normalised to -24 LUFS, MP3 160 kb/s stereo. Playback applies a 2-second circular crossfade."
+  },
+  {
+    "id": "heavy-rain",
+    "name": "Heavy Rain",
+    "description": "Powerful rainfall in woodland",
+    "author": "CHallSmith",
+    "source": "https://freesound.org/people/CHallSmith/sounds/870823/",
+    "recording": "Rain, Heavy in Woods by CHallSmith",
+    "download": "https://cdn.freesound.org/previews/870/870823_18412227-hq.mp3",
+    "license": "CC0 1.0",
+    "licenseUrl": "https://creativecommons.org/publicdomain/zero/1.0/",
+    "url": "/audio/heavy-rain.mp3",
+    "modifications": "Excerpt up to 60 seconds, loudness normalised to -24 LUFS, MP3 160 kb/s stereo. Playback applies a 2-second circular crossfade."
+  },
+  {
+    "id": "ocean-swells",
+    "name": "Ocean Swells",
+    "description": "Rolling surf on a pebble beach",
+    "author": "derjuli",
+    "source": "https://freesound.org/people/derjuli/sounds/693389/",
+    "recording": "Ocean Waves by derjuli",
+    "download": "https://cdn.freesound.org/previews/693/693389_2573247-hq.mp3",
+    "license": "CC0 1.0",
+    "licenseUrl": "https://creativecommons.org/publicdomain/zero/1.0/",
+    "url": "/audio/ocean-swells.mp3",
+    "modifications": "Excerpt up to 60 seconds, loudness normalised to -24 LUFS, MP3 160 kb/s stereo. Playback applies a 2-second circular crossfade."
+  },
+  {
+    "id": "thunderstorm",
+    "name": "Thunderstorm",
+    "description": "Rainfall with distant thunder",
+    "author": "Filmscore",
+    "source": "https://freesound.org/people/Filmscore/sounds/823093/",
+    "recording": "Rainstorm with rain and distant thunder by Filmscore",
+    "download": "https://cdn.freesound.org/previews/823/823093_843915-hq.mp3",
+    "license": "CC0 1.0",
+    "licenseUrl": "https://creativecommons.org/publicdomain/zero/1.0/",
+    "url": "/audio/thunderstorm.mp3",
+    "modifications": "Excerpt up to 60 seconds, loudness normalised to -24 LUFS, MP3 160 kb/s stereo. Playback applies a 2-second circular crossfade."
+  },
+  {
+    "id": "mountain-stream",
+    "name": "Mountain Stream",
+    "description": "Flowing water in a mountain stream",
+    "author": "stujun",
+    "source": "https://freesound.org/people/stujun/sounds/698117/",
+    "recording": "Stream Pond Water Fast Micro-Waterfall Mountain.m4a by stujun",
+    "download": "https://cdn.freesound.org/previews/698/698117_5252281-hq.mp3",
+    "license": "CC0 1.0",
+    "licenseUrl": "https://creativecommons.org/publicdomain/zero/1.0/",
+    "url": "/audio/mountain-stream.mp3",
+    "modifications": "Excerpt up to 60 seconds, loudness normalised to -24 LUFS, MP3 160 kb/s stereo. Playback applies a 2-second circular crossfade."
+  },
+  {
+    "id": "waterfall",
+    "name": "Waterfall",
+    "description": "Cascading stream waterfall in Wales",
+    "author": "innov8ting",
+    "source": "https://freesound.org/people/innov8ting/sounds/627937/",
+    "recording": "Stream_Waterfall_Wales.wav by innov8ting",
+    "download": "https://cdn.freesound.org/previews/627/627937_211652-hq.mp3",
+    "license": "CC0 1.0",
+    "licenseUrl": "https://creativecommons.org/publicdomain/zero/1.0/",
+    "url": "/audio/waterfall.mp3",
+    "modifications": "Excerpt up to 60 seconds, loudness normalised to -24 LUFS, MP3 160 kb/s stereo. Playback applies a 2-second circular crossfade."
+  },
+  {
+    "id": "ancient-forest",
+    "name": "Ancient Forest",
+    "description": "Wind, leaves and birds in woodland",
+    "author": "malbeku",
+    "source": "https://freesound.org/people/malbeku/sounds/735742/",
+    "recording": "WIND and FOREST by malbeku",
+    "download": "https://cdn.freesound.org/previews/735/735742_11816988-hq.mp3",
+    "license": "CC0 1.0",
+    "licenseUrl": "https://creativecommons.org/publicdomain/zero/1.0/",
+    "url": "/audio/ancient-forest.mp3",
+    "modifications": "Excerpt up to 60 seconds, loudness normalised to -24 LUFS, MP3 160 kb/s stereo. Playback applies a 2-second circular crossfade."
+  },
+  {
+    "id": "night-rain",
+    "name": "Night Rain",
+    "description": "Amazonian nighttime rain, insects and distant thunder",
+    "author": "felix.blume",
+    "source": "https://freesound.org/people/felix.blume/sounds/670037/",
+    "recording": "Forest atmosphere at night with light rain drops on foliage, cricket, insect sometimes, cicada, light thunder, recorded in Amazon rainforest by felix.blume",
+    "download": "https://cdn.freesound.org/previews/670/670037_1661766-hq.mp3",
+    "license": "CC0 1.0",
+    "licenseUrl": "https://creativecommons.org/publicdomain/zero/1.0/",
+    "url": "/audio/night-rain.mp3",
+    "modifications": "Excerpt up to 60 seconds, loudness normalised to -24 LUFS, MP3 160 kb/s stereo. Playback applies a 2-second circular crossfade."
+  }
+];

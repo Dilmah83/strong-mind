@@ -27,3 +27,13 @@ Provider responses in the deterministic browser suite are synthetic test fixture
 ## Remaining verification
 
 No physical iPhone or Safari test was performed. Verify Safari standalone install, VoiceOver/text enlargement, Home Screen launch, iOS storage behaviour and an offline relaunch on the user’s device. External audio/catalogue URLs were preserved; individual episode availability and subscriptions were not exhaustively verified. Restaurant/brand shortcuts do not guarantee coverage. Actual Render service deployment/status was not accessible through this repository task; configuration is ready for its existing static site.
+
+## V3 nature soundscapes (2026-11-17)
+
+- Original programme and uploaded ZIP unchanged from V2 main; no user-record reset/new storage origin.
+- Existing 36 tests retained; 12 audio tests added for PCM crossfades, source exclusivity, mute/volume/favourites, migration, autoplay blocks, timer deadlines, visibility/manual/external pause and stale decode cancellation. Build and checks include all audio/UI modules.
+- `python test/audio-browser.py` passed with real Chromium audio decoding for all eight bundled MP3s. Prepared loops are approximately 23.5–58 seconds. Loop joins have no inserted silent buffer; sample differences at the boundary remain within normal recorded-signal variation. Mathematical continuity/absence-of-gap checks do not substitute for listening on the intended headphones/device.
+- One active native source observed through all switches. Source count/context count unchanged during hash navigation and orientation/viewport changes. Explicit mute survived reload and selecting another sound; default rain played after an offline reload. External programme-link activation paused audio. Visibility lifecycle checked by synthetic visibility events; this is not a claim about actual iOS operating-system interruption behaviour.
+- Initial real-browser playback exposed an unbound native `fetch` invocation; corrected before commit and rerun successfully. Native autoplay rejection is also covered by deterministic engine tests.
+- Daily photo/quote arrival and controls visually inspected at 390 × 844. Existing responsive/browser regression suite passed with the arrival screen. No physical iPhone or Safari test performed.
+- Media credits: `/media-credits.html`, `docs/AUDIO-SOURCES.md`, source metadata in `src/soundscapes.js` and `src/landscapes.js`. Recordings CC0; photo derivatives retain their CC BY/CC BY-SA/public-domain terms.
