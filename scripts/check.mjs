@@ -1,6 +1,6 @@
 import {readdir} from 'node:fs/promises';
 import {spawnSync} from 'node:child_process';
-const files=['server.mjs'];
+const files=['server.mjs','proxy-server.mjs'];
 for (const dir of ['src','public','scripts','test']) {
   for (const file of await readdir(dir)) if (/\.(m?js)$/.test(file)) files.push(`${dir}/${file}`);
 }

@@ -1,0 +1,14 @@
+# OPTIONAL separate USDA proxy. The primary app remains a Render Static Site.
+services:
+  - type: web
+    name: strong-mind-usda-proxy
+    runtime: node
+    branch: main
+    buildCommand: npm ci
+    startCommand: node proxy-server.mjs
+    envVars:
+      - key: USDA_API_KEY
+        sync: false
+      - key: ALLOWED_ORIGINS
+        sync: false
+    healthCheckPath: /health

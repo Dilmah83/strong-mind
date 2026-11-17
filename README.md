@@ -1,74 +1,96 @@
-# Strong Mind
+# Strong Mind V2
 
-Installable, mobile-first iPhone Progressive Web App for a 30-day wellbeing practice and daily nutrition tracking. Vanilla JavaScript, no dependencies, accounts, API keys or build service required. Dark interface, responsive layouts, safe-area navigation and accessible native forms.
+A complete local-first, installable Progressive Web App for a deliberate daily practice. Outdoor/stoic visual design, original 30-day programme, 100 sourced quotes, 20 researched success stories, Australian nutrition reference data, flexible portions and reusable recipes. No accounts or cloud synchronisation; private journals and nutrition history remain in the browser.
 
-## Run and verify
+## Build, run and test
 
-Use Node.js 22 or newer (CI uses 24):
+Node.js 22+ (CI uses 24). No runtime or build dependencies are required; a lockfile is included.
 
 ```sh
-npm run check
-npm run build
-npm test
+npm ci
+npm run check && npm run build && npm test
 npm start
 ```
 
-Open http://localhost:3000. The build copies source and static assets into `dist/`. There are no dependencies to install. `PORT` optionally configures the local server. Production should serve `dist/` over HTTPS.
+Open `http://localhost:3000`. `PORT` changes the local port. Build output is `dist/`. `npm run check` checks all application, proxy, build and test JavaScript. `npm test` runs the original domain tests and V2 migration, persistence, unit, recipe, food API, offline cache and proxy tests. No private credentials are used by these tests.
 
-## Deploy on Render
+Optional browser smoke suite (Chromium, not physical iPhone/Safari):
 
-1. The application source is committed on `main`. Use that branch for deployment.
-2. In Render, choose **New → Blueprint**, connect this GitHub repository, and select `render.yaml`. Review and create the static site.
-3. Alternatively create a **Static Site**, choose this repository and branch, set build command to `npm run check && npm run build && npm test`, and publish directory to `dist`.
-4. No environment variables, API keys, database or paid web service are needed. Render provides an HTTPS URL. No SPA rewrite is required: app routes use hash fragments.
-5. Open the deployed URL online once, wait for the first load to finish, then reload in airplane mode to confirm the app shell is cached. External links require connectivity.
+```sh
+# Requires Python playwright and a local Chromium, separate QA-only dependencies.
+PORT=4173 npm start
+# In another terminal:
+python test/browser-smoke.py
+```
 
-Deployments are intentionally not triggered from this development environment; use your Render account to connect the repository. Update the cache version in `public/sw.js` whenever changing precached assets. Updates use normal service-worker lifecycle: close all app windows and reopen to activate a newly installed version. Active pages continue using the previous worker until then.
+`TEST_BASE_URL` and `CHROMIUM_PATH` override defaults. To install the optional runner where absent: `python -m pip install playwright`, then use your installed Chromium or `python -m playwright install chromium` and set `CHROMIUM_PATH`. This is not needed for Render or normal validation. The suite tests 320/375/390/430/1280 px widths, food portions, journal/checklist persistence, recipe saving, quote favourites, offline cold loads, V1 migration and corrupt-record protection. Deterministic provider responses are stubbed in browser tests; live API checks are reported separately.
 
-## Install on iPhone
+## Deploy on the existing Render Static Site
 
-Open the Render HTTPS URL in **Safari → Share → Add to Home Screen → Open as Web App → Add**. Launch online once before using offline. Manifest includes 192/512 PNG icons, standalone display, theme colour and Apple touch icon. Actual installation and layout should be checked on an iPhone before a production release; this environment did not provide browser QA tooling.
+Use the existing `Dilmah83/strong-mind` repository; branch **main**. Do not create another repository or change origins unnecessarily.
 
-## Implemented features
+- Build command: `npm run check && npm run build && npm test`
+- Publish directory: `dist`
+- Root directory: blank
+- Environment variables: none for the static app
+- Node: 22 or newer (24 recommended)
 
-- Thirty distinct daily lessons, practical activities, reflection prompts, mood ratings and timestamped sign-offs. A day requires all three practices plus a nonblank journal to sign off. Editing a signed day clears its sign-off.
-- Daily Spotify and podcast topic-search links plus Calm catalogue links and suggested practices. Days can be revisited freely.
-- Searchable offline database of 36 generic foods; custom foods with any supported nutrient; portion scaling per 100 g; breakfast/lunch/dinner/snack logging, deletion and date-based history.
-- Calories, protein, carbohydrates, fat, fibre, vitamins A/C/D/E/K/B1/B2/B3/B6/B12, folate, calcium, iron, magnesium, potassium, zinc, selenium, sodium and iodine, plus saturated fat and sugar. All 26 goals are configurable; sodium and saturated fat are limits.
-- Completion and mood charts, 14-day calorie chart and numeric macronutrient history table.
-- Local persistence, quota/error notification, optional persistent-storage request, validated JSON backup/restore and offline service-worker asset caching.
-- Automated syntax, domain and packaging checks plus GitHub Actions CI.
+`render.yaml` is a ready-to-use static-site Blueprint. Hash routes require no SPA rewrite. The source and PNG icons/manifest are included. Render provides HTTPS, which is required for PWA installation and service workers. Existing auto-deploy can deploy new main commits; otherwise use **Manual Deploy → Deploy latest commit** in the existing service. Actual Render deployment/access is not controlled by this repository task.
 
-## Content and integration limitations
+## Install/update on iPhone
 
-**The original programme is restored.** The themes, publisher links and practical actions in `src/programme.js` come from the repository’s `strong-mind-app-repacked.zip`, which is preserved unchanged. Added reflection prompts expand the original general reflection questions. The routine is 10 minutes of Calm, 35 minutes of audio, 10 minutes of practical action and 5 minutes of reflection. Completion uses practice checkboxes plus a required journal and timestamped sign-off.
+Open the HTTPS Render URL in Safari → Share → Add to Home Screen → Open as Web App → Add. Launch online once and wait for the “Offline library prepared” notice before using offline. Physical iPhone and Safari install QA must still be performed; Chromium viewport tests are not equivalent.
 
-Spotify links open topic searches. Original publisher links include both individual episode pages and catalogues, and have not been independently verified. Calm opens its site; select the suggested Daily Calm, Daily Jay or Daily Trip in your account. These links require no app credentials; playback, regional availability, account access and paid subscriptions are controlled by those services. There is no embedded playback, Spotify OAuth or offline licensed audio.
+Service-worker assets use one versioned release cache, so a running app does not mix old and new modules/data. New versions install in the background and wait for old windows to close. **Close every Strong Mind window and reopen** to activate the new release. Bump `CACHE` in `public/sw.js` when changing shell assets. User records are separate from the disposable shell/API caches and are not deleted by a service-worker update.
 
-The food database is deliberately local and finite, not a live commercial nutrition catalogue. Values are approximate generic estimates per 100 g, not certified analysis. Seed foods include macros and selected micronutrients. Missing values are unknown and labelled in totals; they must not be interpreted as measured zero. Custom foods can record all supported vitamins/minerals using package labels. No live food API is configured. Adding a larger USDA or commercial database requires a data import, attribution review or backend API proxy with provider credentials; never put private API keys in client code.
+## Implemented
 
-Existing device-local records from the original archived app are migrated automatically on the same origin, and its JSON backups can be restored through Settings. Existing v1 records gain the newly supported nutrient goals. Original portion totals are converted to per-100-g snapshots without changing daily totals. Original sign-off timestamps were not recorded, so migrated completions are timestamped when migrated. Export a backup before switching versions or deployment origins.
+- Outdoor forest/olive/sandstone/charcoal/bronze interface with original mountain, forest and contour artwork, responsive cards, one-hand bottom navigation, reduced-motion support and native accessible forms.
+- Original 30-day programme content and existing audio URLs preserved. Calm 10 min, audio 35 min, practical action 10 min, reflection 5 min. Saved checklists, mood ratings, timestamped sign-offs and journals; editing a signed day clears its sign-off. Added YouTube links are labelled searches.
+- 100 source-matched public-domain excerpts from Marcus Aurelius and Epictetus, work/book/section references, original practical interpretations, challenges/questions, deterministic local-calendar-date selection, reflection checkbox, favourites and 30-day archive. Optional, not part of required programme completion.
+- 20 short researched success stories with all seven filters, daily feature, challenge/actions/outcome/lesson/application and direct evidence links. First-person claims are distinguished from institutional records. Optional five-minute reading/listening/reflection.
+- 1,588 official FSANZ AFCD Release 3 Australian food records offline; 38 Australian-listed Open Food Facts label snapshots, plus the original 36 generic estimates retained for compatibility. Raw/cooked foods remain distinct. Source IDs, derivation/confidence and nutrient conventions are visible.
+- Live Australian-filtered Open Food Facts brand/product search and barcode lookup; USDA FoodData Central search with public demo access or optional secure proxy. Brand/retailer and restaurant shortcuts, source/menu links, spelling aliases, recent foods, favourites, custom foods and duplicate barcode detection. No promise that every brand/product is available.
+- Six editable multi-ingredient example meals plus a recipe workshop. Save complete meals, set measured finished yield and log any portion. Partial micronutrients are marked; missing values are never replaced with invented zeroes.
+- Grams, kilograms, millilitres, litres, ounces, US fluid ounces, Australian cups/tablespoons, teaspoons, pieces, slices, scoops, servings, packets, containers, bottles and custom measures. Decimal/fraction quantities, live nutrient preview, saved food-specific portions/density and canonical gram snapshots.
+- All 26 existing nutrition fields/goals, daily meal/date history, deletion undo, calorie/protein/micronutrient home summary, completion/streak/mood charts and accessible numeric nutrition tables.
+- Local persistence, validated backups/import, previous-copy restoration, untouched pre-V2 migration backup, quota/error handling, corrupt-record protection and concurrent-window conflict detection. No private-data transmission or telemetry.
 
-Data is **device/browser-local**, not cloud-synchronised. Clearing Safari storage, uninstalling the app or iOS eviction can remove data. Export backups regularly and treat them as private health-related records. There is no server account, encryption-at-rest layer, push notification service or cross-device sync. Nutrition targets are editable examples, not medical prescriptions.
+## Food APIs and credentials
 
-## Source map
+**Open Food Facts:** no API key. Text requests are sent only on Search; barcode lookup uses v2. Results are cached locally (up to 15 searches, 24 h fresh; older results usable offline or on errors). Offline library, saved foods and manual labels remain available on timeouts/rate limits/no matches. Community label records require user verification. No scraped commercial menu dataset or invented restaurant nutrition.
 
-- `src/app.js`: views, forms and persistence
-- `src/model.js`: nutrient schema, calculations and backup validation
-- `src/programme.js`: editable 30-day content
-- `src/foods.js`: offline food records and coverage notes
-- `public/sw.js`: offline shell caching
-- `public/manifest.webmanifest`: PWA installation metadata
-- `render.yaml`: Render static-site blueprint
+**USDA:** the static app works with the official public `DEMO_KEY` (30 requests/IP/hour, 50/IP/day). This key is explicitly public and intended for initial testing. Do **not** put a private key in the browser. For greater capacity deploy the supplied optional proxy as a separate Render Node service using `render-proxy.yaml`:
 
-## Release verification
+1. Set `USDA_API_KEY` as a Render secret and `ALLOWED_ORIGINS` to your exact static-site origin (comma-separated if needed).
+2. Build `npm ci`; start `node proxy-server.mjs`; health path `/health`.
+3. In app Settings enter `https://YOUR-PROXY.onrender.com/api/usda`. Never paste the key itself.
 
-Automated checks cover portion/date calculations, sign-off prerequisites, backup round-trip and rejection, complete programme records, database IDs, nutrient schema, precached assets and PNG icon dimensions. Browser and physical iPhone checks are still required:
+Proxy requests accept only a food query, use a fixed USDA upstream, omit query/key logging, enforce CORS origin allowlisting and a basic process-local rate limit. It adds no accounts or private-data storage. Separate Render web-service hosting may incur charges; this is optional and the static app requires no secret.
 
-- Add the site to Home Screen and launch standalone.
-- Complete a lesson, reload, edit it and confirm sign-off resets.
-- Add 150 g of a food; verify 1.5× its per-100 g values. Change date and inspect history.
-- Create a food with vitamin/mineral values and verify totals and missing-data labels.
-- Change goals; export, then restore a backup and inspect journals and meals.
-- Relaunch offline after an online visit and verify journals, custom foods and logging work.
-- Check VoiceOver, keyboard navigation, text scaling and layouts on a small iPhone.
+## Measurements and data coverage
+
+Canonical diary mass is grams and nutrient snapshots are per 100 g. API records with per-100-mL data require a measured/published density before conversion. **100 mL is never assumed to equal 100 g.** Use FSANZ specific gravity where published, a label portion weight, or enter your own weighed grams per unit. “Remember” stores these user-supplied values locally and labels them as such. Pieces/scoops/slices have no universal weight. For a per-100-mL custom food, provide measured density; volume alone cannot establish mass.
+
+Household standards are explicit: AU cup 250 mL, AU tablespoon 20 mL, teaspoon 5 mL, US fl oz 29.5735295625 mL. Other household standards can use custom measured grams. No raw-to-cooked conversion is guessed. Recipe examples specify ingredient weights; actual cooking retention/loss, brands and sauces vary. Weigh final yield and edit the ingredients to match your meal.
+
+— means unavailable; zero is used only when reported by the source (or when no food is logged). Partial totals reflect only available values. FSANZ vitamin A retinol equivalents and total folates differ from some USDA conventions; see each source’s notes. Nutrition goals are adjustable examples, not personalised clinical advice.
+
+## Data preservation and privacy
+
+The origin and storage key `strong-mind-v1` are retained. V2 schema migration preserves old programme dates, checklists, journals, moods, sign-offs, custom foods, goals and meal snapshots. Original ZIP-era saves/backups are also supported. Before migration, original bytes are retained at `strong-mind-v1-before-v2`; each subsequent successful write retains a previous stored copy. The pre-V2 copy does not overwrite itself. Unreadable primary records pause saving instead of silently resetting/overwriting them; Settings can export the raw recovery file or restore a validated backup. A full-storage failure leaves the old primary record intact and shows an export warning.
+
+Export JSON backups regularly. iOS eviction, deleting browsing data or changing domains can remove access to device-local data. Backup files contain private records and are not encrypted by this app. There are no user accounts, cloud sync, push reminders, health-device imports or analytics. Only explicit food queries go to external food services; source/audio links go to their respective sites. No journal or nutrition history is included in requests.
+
+## Source files and attribution
+
+- `src/app.js`, `src/style.css`: integrated views, forms and outdoor theme
+- `src/model.js`, `src/storage.js`: original domain model plus safe V2 migrations/persistence
+- `src/wisdom.js`, `src/quotes-data.js`, `src/stories.js`: offline inspiration libraries
+- `src/food-api.js`, `src/units.js`, `src/nutrition.js`, `src/recipe-examples.js`: providers, portions, totals and recipes
+- `public/data/`: separate attributed FSANZ and OFF datasets
+- `public/sw.js`, `public/manifest.webmanifest`, SVG artwork and PNG icons: offline/install assets
+- `proxy-server.mjs`, `render-proxy.yaml`: optional private-key USDA proxy
+- `test/`, `scripts/`: automated validation, browser QA, quote verification and FSANZ importer
+
+[Food licences/provenance](docs/DATA-SOURCES.md) · [Quote and story research](docs/CONTENT-SOURCES.md). Public in-app attribution is at `/data-sources.html`. Quote verification: `npm run verify:quotes` (optional network check). Seneca/Musonius translations are not included in this release; see the content notes. The original uploaded ZIP remains unchanged.
